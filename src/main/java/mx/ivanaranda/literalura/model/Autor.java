@@ -64,4 +64,15 @@ public class Autor {
     public void setLibro(Libro libro) {
         this.libro = libro;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", nacimimiento=" + nacimimiento +
+                ", muerte=" + muerte +
+                ", libro=" + libro +
+                '}';
+    }
 }

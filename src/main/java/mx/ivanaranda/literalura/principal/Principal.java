@@ -11,17 +11,18 @@ import mx.ivanaranda.literalura.service.IConvierteDatos;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Principal {
     private final String URL_BASE = "https://gutendex.com/books/";
     private IConvierteDatos convierteDatos = new ConvierteDatos();
     private ILibroRepository libroRepository;
+    private IAutorRepository autorRepository;
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoAPI = new ConsumoAPI();
 
-    public Principal(ILibroRepository libroRepository) {
+    public Principal(ILibroRepository libroRepository, IAutorRepository autorRepository) {
         this.libroRepository = libroRepository;
+        this.autorRepository = autorRepository;
     }
 
     public void menu(){
@@ -51,6 +52,9 @@ public class Principal {
                     case 2:
                         this.buscarLibrosRegistrados();
                         break;
+                    case 3:
+                        this.buscarAutoresRegistrados();
+                        break;
                     default:
                         System.out.println("¡¡¡ Opción invalida !!! ");
                         break;
@@ -59,6 +63,7 @@ public class Principal {
         }
         System.out.println(".:: A D I O S ::.");
     }
+
 
 
     private void buscarSeriePorNombreAPI() {
@@ -107,6 +112,11 @@ public class Principal {
         }
     }
 
+    private void buscarAutoresRegistrados() {
+        System.out.println(".:: Autores registrados ::.");
+        List<String> autores = autorRepository.findDistinctByNombre();
+        autores.stream().forEach(System.out::println);
+    }
 
     public static boolean esNumeroEntero(String texto) {
         try {

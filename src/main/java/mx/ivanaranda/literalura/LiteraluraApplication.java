@@ -1,5 +1,6 @@
 package mx.ivanaranda.literalura;
 
+import mx.ivanaranda.literalura.principal.IAutorRepository;
 import mx.ivanaranda.literalura.principal.ILibroRepository;
 import mx.ivanaranda.literalura.principal.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LiteraluraApplication implements CommandLineRunner {
 	@Autowired
 	private ILibroRepository libroRepository;
+	@Autowired
+	private IAutorRepository autorRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LiteraluraApplication.class, args);
@@ -18,7 +21,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal(libroRepository);
+		Principal principal = new Principal(libroRepository, autorRepository);
 		principal.menu();
 	}
 }
