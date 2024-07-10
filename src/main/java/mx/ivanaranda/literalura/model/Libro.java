@@ -49,6 +49,14 @@ public class Libro {
         this.descargas = descargas;
     }
 
+    public String getIdiomas() {
+        return idiomas;
+    }
+
+    public void setIdiomas(String idiomas) {
+        this.idiomas = idiomas;
+    }
+
     public List<Autor> getAutores() {
         return autores;
     }
