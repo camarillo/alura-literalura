@@ -12,11 +12,16 @@ public class Libro {
     private Long id;
     private String titulo;
     private Double descargas;
+    private String idiomas;
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Autor> autores;
 
+    public Libro() {
+    }
+
     public Libro(DatosLibro datosLibro) {
         this.titulo = datosLibro.titulo();
+        this.idiomas = datosLibro.idiomas().toString();
         this.descargas = datosLibro.numeroDeDescargas();
     }
 

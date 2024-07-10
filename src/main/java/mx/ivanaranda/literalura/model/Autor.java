@@ -16,6 +16,9 @@ public class Autor {
     @ManyToOne
     private Libro libro;
 
+    public Autor() {
+    }
+
     public Autor(DatosAutor datosAutor) {
         this.nombre = datosAutor.nombre();
         this.nacimimiento = datosAutor.nacimiento();

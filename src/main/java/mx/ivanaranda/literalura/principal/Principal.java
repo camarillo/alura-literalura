@@ -67,18 +67,24 @@ public class Principal {
                 .filter(l -> l.titulo().toUpperCase().contains(nombreLibroUsuario.toUpperCase()))
                 .findFirst();
         if(libroBuscado.isPresent()){
-            Libro libro = new Libro(libroBuscado.get());
-            List<Autor> autores = libroBuscado.get().autores().stream()
-                    .map(Autor::new)
-                    .toList();
-            libro.setAutores(autores);
-            libroRepository.save(libro);
-            System.out.println("---- LIBRO ENCONTRADO -----");
-            System.out.println("Titulo: " + libroBuscado.get().titulo());
-            System.out.println("Autor: " + libroBuscado.get().autores().get(0).nombre());
-            System.out.println("Idioma: " + libroBuscado.get().idiomas().get(0));
-            System.out.println("Descargas: " + libroBuscado.get().numeroDeDescargas());
-            System.out.println("---------------------------");
+            Optional<Libro> buscarLibro = libroRepository.findByTituloContainsIgnoreCase(libroBuscado.get().titulo());
+            if (buscarLibro.isEmpty()){
+                Libro libro = new Libro(libroBuscado.get());
+                List<Autor> autores = libroBuscado.get().autores().stream()
+                        .map(Autor::new)
+                        .toList();
+                libro.setAutores(autores);
+
+                libroRepository.save(libro);
+                System.out.println("---- LIBRO ENCONTRADO -----");
+                System.out.println("Titulo: " + libroBuscado.get().titulo());
+                System.out.println("Autor: " + libroBuscado.get().autores().get(0).nombre());
+                System.out.println("Idioma: " + libroBuscado.get().idiomas().get(0));
+                System.out.println("Descargas: " + libroBuscado.get().numeroDeDescargas());
+                System.out.println("----- LIBRO GUARDADO ------");
+            } else {
+                System.out.println("---- El libro " + libroBuscado.get().titulo() + " ya fue guardado anteriormente");
+            }
         } else {
             System.out.println("XXXXX LIBRO NO ENCONTRADO XXXXX");
         }
