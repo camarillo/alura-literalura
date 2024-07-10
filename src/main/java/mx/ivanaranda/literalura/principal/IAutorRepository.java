@@ -10,4 +10,6 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
     @Query("SELECT DISTINCT a.nombre FROM Autor a")
     List<String> findDistinctByNombre();
 
+    @Query("SELECT DISTINCT a.nombre FROM Autor a WHERE :anio BETWEEN a.nacimimiento AND a.muerte")
+    List<String> findDistinctByNombreAlive(int anio);
 }

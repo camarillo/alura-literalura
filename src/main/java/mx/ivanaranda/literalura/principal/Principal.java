@@ -55,6 +55,9 @@ public class Principal {
                     case 3:
                         this.buscarAutoresRegistrados();
                         break;
+                    case 4:
+                        this.buscarAutoresRegistradosVivos();
+                        break;
                     default:
                         System.out.println("¡¡¡ Opción invalida !!! ");
                         break;
@@ -63,7 +66,6 @@ public class Principal {
         }
         System.out.println(".:: A D I O S ::.");
     }
-
 
 
     private void buscarSeriePorNombreAPI() {
@@ -117,6 +119,25 @@ public class Principal {
         List<String> autores = autorRepository.findDistinctByNombre();
         autores.stream().forEach(System.out::println);
     }
+
+    private void buscarAutoresRegistradosVivos() {
+        System.out.println(".:: Autores registrados vivos ::.");
+        System.out.print("Año quieres buscar: ");
+        String anioUsuario = teclado.nextLine();
+        if (esNumeroEntero(anioUsuario)){
+            int anio = Integer.parseInt(anioUsuario);
+            List<String> autores = autorRepository.findDistinctByNombreAlive(anio);
+            if(autores.isEmpty()){
+                System.out.println("No hay ningun autor vivo en: " + anio);
+            } else {
+                System.out.println("Los autores vivos en " + anio + " son: ");
+                autores.stream().forEach(System.out::println);
+            }
+        } else {
+            System.out.println("----- AÑO INCORRECTO ("+anioUsuario+")-----");
+        }
+    }
+
 
     public static boolean esNumeroEntero(String texto) {
         try {
