@@ -1,20 +1,29 @@
 package mx.ivanaranda.literalura.principal;
 
+import mx.ivanaranda.literalura.model.Autor;
 import mx.ivanaranda.literalura.model.Datos;
 import mx.ivanaranda.literalura.model.DatosLibro;
+import mx.ivanaranda.literalura.model.Libro;
 import mx.ivanaranda.literalura.service.ConsumoAPI;
 import mx.ivanaranda.literalura.service.ConvierteDatos;
 import mx.ivanaranda.literalura.service.IConvierteDatos;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     private final String URL_BASE = "https://gutendex.com/books/";
     private IConvierteDatos convierteDatos = new ConvierteDatos();
-
+    private ILibroRepository libroRepository;
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoAPI = new ConsumoAPI();
+
+    public Principal(ILibroRepository libroRepository) {
+        this.libroRepository = libroRepository;
+    }
+
     public void menu(){
         var opcion = -1;
         var menu = """
@@ -46,7 +55,6 @@ public class Principal {
             }
         }
         System.out.println(".:: A D I O S ::.");
-
     }
 
     private void buscarSeriePorNombreAPI() {
@@ -59,13 +67,20 @@ public class Principal {
                 .filter(l -> l.titulo().toUpperCase().contains(nombreLibroUsuario.toUpperCase()))
                 .findFirst();
         if(libroBuscado.isPresent()){
-
+            Libro libro = new Libro(libroBuscado.get());
+            List<Autor> autores = libroBuscado.get().autores().stream()
+                    .map(Autor::new)
+                    .toList();
+            libro.setAutores(autores);
+            libroRepository.save(libro);
             System.out.println("---- LIBRO ENCONTRADO -----");
             System.out.println("Titulo: " + libroBuscado.get().titulo());
             System.out.println("Autor: " + libroBuscado.get().autores().get(0).nombre());
             System.out.println("Idioma: " + libroBuscado.get().idiomas().get(0));
             System.out.println("Descargas: " + libroBuscado.get().numeroDeDescargas());
             System.out.println("---------------------------");
+        } else {
+            System.out.println("XXXXX LIBRO NO ENCONTRADO XXXXX");
         }
     }
 
