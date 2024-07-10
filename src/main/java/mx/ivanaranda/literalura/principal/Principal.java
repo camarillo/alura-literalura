@@ -58,6 +58,9 @@ public class Principal {
                     case 4:
                         this.buscarAutoresRegistradosVivos();
                         break;
+                    case 5:
+                        this.buscarLibrosPorIdioma();
+                        break;
                     default:
                         System.out.println("¡¡¡ Opción invalida !!! ");
                         break;
@@ -66,7 +69,6 @@ public class Principal {
         }
         System.out.println(".:: A D I O S ::.");
     }
-
 
     private void buscarSeriePorNombreAPI() {
         System.out.println(".:: Buscar Libro ::.");
@@ -138,6 +140,28 @@ public class Principal {
         }
     }
 
+    private void buscarLibrosPorIdioma() {
+        System.out.println(".:: Libros por idioma ::.");
+        System.out.print("Idiomas disponibles: ");
+        List<String> idiomasDisponibles = libroRepository.findDistinctByIdiomas();
+        idiomasDisponibles.stream().forEach(s -> System.out.println(s.replace("[","").replace("]","")));
+        System.out.println("Escoge un idioma: ");
+        String idiomaUsuario = teclado.nextLine();
+        List<Libro> libros = libroRepository.findByIdiomas(idiomaUsuario);
+        if(libros.isEmpty()){
+            System.out.println("----- No existen libros para el idioma: " + idiomaUsuario + "  -----");
+        } else {
+            System.out.println("Libros en idioma: " + idiomaUsuario);
+            for (Libro libro : libros){
+                System.out.println("---- LIBRO -----");
+                System.out.println("Titulo: " + libro.getTitulo());
+                System.out.println("Autor: " + libro.getAutores().get(0).getNombre());
+                System.out.println("Idioma: " + libro.getIdiomas());
+                System.out.println("Descargas: " + libro.getDescargas());
+                System.out.println("----------------");
+            }
+        }
+    }
 
     public static boolean esNumeroEntero(String texto) {
         try {
